@@ -1,0 +1,38 @@
+[
+  {
+    "model": "products.product",
+    "pk": 4,
+    "fields": {
+      "name": "Худи",
+      "description": "Описание 1",
+      "price": "10000.00",
+      "quantity": 10,
+      "image": "products_images/Adidas-hoodie.png",
+      "category": 1
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 5,
+    "fields": {
+      "name": "Худи 2",
+      "description": "описание 2",
+      "price": "11111.00",
+      "quantity": 10,
+      "image": "products_images/Black-Dr-Martens-shoes.png",
+      "category": 1
+    }
+  },
+  {
+    "model": "products.product",
+    "pk": 6,
+    "fields": {
+      "name": "Худи 3",
+      "description": "описание 3",
+      "price": "22222.00",
+      "quantity": 10,
+      "image": "products_images/Adidas-hoodie_Cb1ZXip.png",
+      "category": 1
+    }
+  }
+]

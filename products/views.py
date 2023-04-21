@@ -1,33 +1,36 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
 
 from products.models import ProductCategory, Product, Basket
-from django.core.paginator import Paginator
 
 
-# Create your views here.
-def index(request):
-    context = {
-        'title': 'Store',
-    }
-    return render(request, 'products/index.html', context)
+class IndexView(TemplateView):
+    template_name = 'products/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['title'] = 'Store'
+        return context
 
 
-def products(request, category_id=None, page_number=1):
-    if category_id:
-        products_category = Product.objects.filter(category_id=category_id)
-    else:
-        products_category = Product.objects.all()
-    per_page = 1
-    paginator = Paginator(products_category, per_page)
-    products_paginator = paginator.page(page_number)
+class ProductsListView(ListView):
+    model = Product
+    context_object_name = 'products'
+    template_name = 'products/products.html'
+    paginate_by = 1
 
-    context = {
-        'title': 'Store - Каталог',
-        'categories': ProductCategory.objects.all(),
-        'products': products_paginator,
-    }
-    return render(request, 'products/products.html', context)
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        category_id = self.kwargs.get('category_id')
+        return queryset.filter(category_id=category_id) if category_id else queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        context['title'] = 'Store - Каталог'
+        context['categories'] = ProductCategory.objects.all()
+        return context
 
 
 @login_required

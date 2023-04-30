@@ -1,6 +1,10 @@
 {% extends 'products/base.html' %}
 {% load static %}
 
+{% block logo_link %}
+    <a class="navbar-brand" href="{% url 'index' %}">Store</a>
+{% endblock %}
+
 {% block css %}
     <link href="{% static 'vendor/css/orders.css' %}" rel="stylesheet">
 {% endblock %}

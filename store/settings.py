@@ -12,21 +12,48 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+import environ
+
+env = environ.Env(
+    DEBUG=(bool),
+    SECRET_KEY=(str),
+    DOMAIN_MAIN=(str),
+
+    DATABASE_NAME=(str),
+    DATABASE_USER=(str),
+    DATABASE_PASSWORD=(str),
+    DATABASE_HOST=(str),
+    DATABASE_PORT=(str),
+
+    EMAIL_HOST=(str),
+    EMAIL_PORT=(int),
+    EMAIL_HOST_USER=(str),
+    EMAIL_HOST_PASSWORD=(str),
+    EMAIL_USE_SSL=(bool),
+
+    STRIPE_PUBLIC_KEY=(str),
+    STRIPE_SECRET_KEY=(str),
+    STRIPE_WEBHOOK_SECRET=(str),
+)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Take environment variables from .env file
+environ.Env.read_env(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-u7)v*#gd2i5dxw17v22i%gld8uw!1k@ib!80$&#+4bz941ic=r'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
-DOMAIN_MAIN = 'http://127.0.0.1:8000'
+DOMAIN_MAIN = env('DOMAIN_MAIN')
 
 # Application definition
 
@@ -95,11 +122,11 @@ INTERNAL_IPS = [
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "store_db",
-        "USER": "store_username",
-        "PASSWORD": "store_password",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "NAME": env('DATABASE_NAME'),
+        "USER": env('DATABASE_USER'),
+        "PASSWORD": env('DATABASE_PASSWORD'),
+        "HOST": env('DATABASE_HOST'),
+        "PORT": env('DATABASE_PORT'),
     }
 }
 
@@ -156,14 +183,14 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 # Sending emails
-
-# EMAIL_HOST = 'smtp.yandex.com'
-# EMAIL_PORT = 465
-# EMAIL_HOST_USER = 'store-serverstore@yandex.ru'
-# EMAIL_HOST_PASSWORD = 'qwertyfj1'
-# EMAIL_USE_SSL = True
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_HOST = env('EMAIL_HOST')
+    EMAIL_PORT = env('EMAIL_PORT')
+    EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+    EMAIL_USE_SSL = env('EMAIL_USE_SSL')
 
 # OAuth
 
@@ -184,6 +211,6 @@ SOCIALACCOUNT_PROVIDERS = {
 
 # Stripe
 
-STRIPE_PUBLIC_KEY = 'pk_test_51N2Xw0GACsDnDnaf3MC8ZNlOtFaJ9moh6dzPDIJYMeZv9NE7yJvjNv9BuqowqQ1mm1Gt2kKjTZI6TNv1JwUeXwRv00ptmssl3O'
-STRIPE_SECRET_KEY = 'sk_test_51N2Xw0GACsDnDnafyAGXan4WUSpMJbCrL6CJuXJ3d7vPOpa5y44DKtQYjzhvLAEnOi24k3vQzw9IwZjMZe2nG96400Eta6kpeD'
-STRIPE_WEBHOOK_SECRET = 'whsec_df32891cfa1e4da96b0f3d097114eaaaec0e45b991bd35ef3bb3f4157f24b85d'
+STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
+STRIPE_WEBHOOK_SECRET = env('STRIPE_WEBHOOK_SECRET')

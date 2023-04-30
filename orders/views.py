@@ -1,6 +1,6 @@
+import stripe
 from http import HTTPStatus
 
-import stripe
 from django.conf import settings
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse, reverse_lazy
@@ -11,6 +11,7 @@ from django.views.generic.edit import CreateView
 from common.views import TitleMixin
 from orders.forms import OrderForm
 from products.models import Basket
+from orders.models import Order
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -78,4 +79,5 @@ def stripe_webhook_view(request):
 
 def fulfill_order(session):
     order_id = int(session.metadata.order_id)
-    print("Fulfilling order")
+    order = Order.objects.get(id=order_id)
+    order.update_after_payment()

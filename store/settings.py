@@ -26,7 +26,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-DOMAIN_MAIN = 'http://localhost:8000'
+DOMAIN_MAIN = 'http://127.0.0.1:8000'
 
 # Application definition
 
@@ -181,3 +181,8 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
     }
 }
+
+# Stripe
+
+STRIPE_PUBLIC_KEY = 'pk_test_51N2Xw0GACsDnDnaf3MC8ZNlOtFaJ9moh6dzPDIJYMeZv9NE7yJvjNv9BuqowqQ1mm1Gt2kKjTZI6TNv1JwUeXwRv00ptmssl3O'
+STRIPE_SECRET_KEY = 'sk_test_51N2Xw0GACsDnDnafyAGXan4WUSpMJbCrL6CJuXJ3d7vPOpa5y44DKtQYjzhvLAEnOi24k3vQzw9IwZjMZe2nG96400Eta6kpeD'
